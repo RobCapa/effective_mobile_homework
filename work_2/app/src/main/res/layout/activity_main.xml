@@ -7,12 +7,47 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/mainActivity_textView_networkRequestResult"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="#2226D3"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/mainActivity_textView_timer"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#D81818"
+        android:gravity="center"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivity_textView_networkRequestResult"
+        tools:text="TextView" />
+
+    <EditText
+        android:id="@+id/mainActivity_editText_userInput"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivity_textView_timer" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mainActivity_recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/mainActivity_editText_userInput" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
