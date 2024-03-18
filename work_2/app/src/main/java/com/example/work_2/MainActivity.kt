@@ -13,11 +13,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.ReplaySubject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
+import kotlin.math.max
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +31,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Observable.interval(1, TimeUnit.SECONDS)
 
         subjects()
         networkRequest()
@@ -230,6 +235,41 @@ class MainActivity : AppCompatActivity() {
 
                 }
             )
+    }
+
+    // Задание 3
+
+    /**
+     * Напишите аналоги операторов throttleFirst и throttleLatest из RxJava для Flow
+     * */
+
+    fun <T> Flow<T>.throttleFirst(skipDuration: Long, unit: TimeUnit): Flow<T> {
+        return throttle(skipDuration, unit, false)
+    }
+
+    fun <T> Flow<T>.throttleLatest(skipDuration: Long, unit: TimeUnit): Flow<T> {
+        return throttle(skipDuration, unit, true)
+    }
+
+    private fun <T> Flow<T>.throttle(
+        skipDuration: Long,
+        unit: TimeUnit,
+        startCountdownImmediately: Boolean,
+    ) = flow {
+        val skipTime = unit.toMillis(max(skipDuration, 0L))
+
+        var lastElementTime =
+            if (startCountdownImmediately) System.currentTimeMillis()
+            else -1L
+
+        collect { value ->
+            val currentElementTime = System.currentTimeMillis()
+
+            if (lastElementTime == -1L || currentElementTime - lastElementTime > skipTime) {
+                lastElementTime = currentElementTime
+                emit(value)
+            }
+        }
     }
 
     private fun Any.toLog() {
